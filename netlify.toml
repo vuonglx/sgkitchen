@@ -1,0 +1,12 @@
+[build]
+  publish = "out"
+  command = "npm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  NEXT_TELEMETRY_DISABLED = "1"
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID = "demo-project"

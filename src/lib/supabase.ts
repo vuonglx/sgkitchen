@@ -118,6 +118,21 @@ export const adminService = {
     return data as Customer
   },
 
+  async createCustomer(customer: Omit<Customer, 'id' | 'created_at' | 'total_orders' | 'total_spent' | 'last_order_at'>) {
+    const { data, error } = await supabase
+      .from('customers')
+      .insert([{
+        ...customer,
+        total_orders: 0,
+        total_spent: 0
+      }])
+      .select()
+      .single()
+    
+    if (error) throw error
+    return data as Customer
+  },
+
   async updateCustomer(id: string, updates: Partial<Customer>) {
     const { data, error } = await supabase
       .from('customers')
@@ -128,6 +143,15 @@ export const adminService = {
     
     if (error) throw error
     return data as Customer
+  },
+
+  async deleteCustomer(id: string) {
+    const { error } = await supabase
+      .from('customers')
+      .delete()
+      .eq('id', id)
+    
+    if (error) throw error
   },
 
   // Order management

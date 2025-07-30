@@ -1,3 +1,22 @@
+// Align with Supabase schema
+export interface Dish {
+  id: string;
+  name_en: string;
+  name_fr: string;
+  name_vi: string;
+  description_en: string;
+  description_fr: string;
+  description_vi: string;
+  price: number;
+  category: 'appetizers' | 'main_dishes' | 'sides' | 'beverages';
+  spice_level: number;
+  is_popular: boolean;
+  image_url?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// Legacy MenuItem interface for backward compatibility
 export interface MenuItem {
   id: string;
   name: {
@@ -64,7 +83,37 @@ export interface Cart {
   updatedAt: Date;
 }
 
+// Align with Supabase schema
+export interface Customer {
+  id: string;
+  email: string;
+  name: string;
+  phone?: string;
+  created_at: string;
+  last_order_at?: string;
+  total_orders: number;
+  total_spent: number;
+}
+
 export interface Order {
+  id: string;
+  customer_id: string;
+  items: OrderItem[];
+  total_amount: number;
+  status: 'pending' | 'confirmed' | 'preparing' | 'ready' | 'delivered' | 'cancelled';
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OrderItem {
+  dish_id: string;
+  quantity: number;
+  price: number;
+  dish_name: string;
+}
+
+// Legacy Order interface for backward compatibility
+export interface LegacyOrder {
   id: string;
   userId: string;
   items: CartItem[];
@@ -94,6 +143,18 @@ export interface Order {
   updatedAt: Date;
 }
 
+// Admin user interface
+export interface AdminUser {
+  id: string;
+  email: string;
+  name: string;
+  role: 'admin' | 'super_admin';
+  created_at: string;
+  last_login?: string;
+  is_active: boolean;
+}
+
+// Legacy User interface for backward compatibility
 export interface User {
   id: string;
   email: string;

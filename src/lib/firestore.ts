@@ -1,4 +1,4 @@
-import { MenuItem, Category, Order, User, Cart, Recommendation } from '@/types';
+import { MenuItem, Category, Order, LegacyOrder, User, Cart, Recommendation } from '@/types';
 import { supabase } from './supabase';
 
 // Helper function to convert Supabase dish to MenuItem
@@ -246,7 +246,7 @@ export const getCategory = async (id: string): Promise<Category | null> => {
 };
 
 // Orders
-export const createOrder = async (order: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> => {
+export const createOrder = async (order: Omit<LegacyOrder, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> => {
   try {
     // First, ensure customer exists
     const { data: existingCustomer } = await supabase
@@ -306,7 +306,7 @@ export const createOrder = async (order: Omit<Order, 'id' | 'createdAt' | 'updat
   }
 };
 
-export const getOrder = async (id: string): Promise<Order | null> => {
+export const getOrder = async (id: string): Promise<LegacyOrder | null> => {
   try {
     const { data, error } = await supabase
       .from('orders')
@@ -328,8 +328,8 @@ export const getOrder = async (id: string): Promise<Order | null> => {
 
     if (!data) return null;
 
-    // Convert to Order format
-    const order: Order = {
+    // Convert to LegacyOrder format
+    const order: LegacyOrder = {
       id: data.id,
       userId: data.customer_id,
       items: [], // Would need to reconstruct from items JSON
@@ -358,7 +358,7 @@ export const getOrder = async (id: string): Promise<Order | null> => {
   }
 };
 
-export const getUserOrders = async (userId: string): Promise<Order[]> => {
+export const getUserOrders = async (userId: string): Promise<LegacyOrder[]> => {
   try {
     const { data, error } = await supabase
       .from('orders')
@@ -405,7 +405,7 @@ export const getUserOrders = async (userId: string): Promise<Order[]> => {
   }
 };
 
-export const updateOrderStatus = async (id: string, status: Order['status']): Promise<void> => {
+export const updateOrderStatus = async (id: string, status: LegacyOrder['status']): Promise<void> => {
   try {
     const { error } = await supabase
       .from('orders')
